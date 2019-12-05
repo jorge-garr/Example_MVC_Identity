@@ -1,0 +1,55 @@
+﻿@model Example_MVC_Identity.Models.EmployeeView;
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<script>
+    var listaEmpleados =  JSON.parse('@Html.Raw(Model.EmployeesConsulting)');
+</script>
+
+<hr />
+<h2>Tabla de IT</h2>
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Departamento</th>
+            <th>Puesto</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var dato in Model.EmployeesIT)
+        {
+            <tr>
+                <td>@dato.Name</td>
+                <td>@dato.LastName</td>
+                <td>@dato.Department</td>
+                <td>@dato.Position</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<hr />
+<h2>Tabla de IT</h2>
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Departamento</th>
+            <th>Puesto</th>
+        </tr>
+    </thead>
+    <tbody id="tbodytable">
+       
+    </tbody>
+</table>
+
+
+
+@section Scripts{
+    <script src="~/js/table.js"></script>
+}
