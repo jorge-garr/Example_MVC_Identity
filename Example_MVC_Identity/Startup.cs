@@ -12,6 +12,8 @@ using Example_MVC_Identity.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Identity.Model;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Example_MVC_Identity
 {
@@ -27,13 +29,16 @@ namespace Example_MVC_Identity
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
+                   .AddUserStore<UserStore<ApplicationUser, ApplicationRole, ApplicationDbContext, string, ApplicationUserClaim, ApplicationUserRole, ApplicationUserLogin, ApplicationUserToken, ApplicationRoleClaim>>()
+                   .AddRoleStore<RoleStore<ApplicationRole, ApplicationDbContext, string, ApplicationUserRole, ApplicationRoleClaim>>()
+                   .AddDefaultUI()
+                   .AddDefaultTokenProviders();
+
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddControllersWithViews();
-            services.AddRazorPages();
+                    options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection"),
+                    b => b.MigrationsAssembly("Example_MVC_Identity")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
